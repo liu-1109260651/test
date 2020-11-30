@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+        <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+        <style rel="stylesheet">
+         #app{
+           width: 15%;
+           margin: 0 auto;
+           text-align: right;
+         }   
+         .color-red{
+           color:red;
+           
+         }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+         <table>
+          <tr v-for="(item,index) of product" :key="index">
+          <td><input type="checkbox" checked @click="checkbox(index)"></td>
+          <td>{{item.name}}</td>
+          <td>{{item.price}}</td>
+          <td>
+          <button @click="del(index)"> - </button>
+          <span>{{item.count}}</span>
+          <button @click="product[index].count++"> + </button>
+          </td>
+          </tr>
+         </table>
+         <h2><span class="color-red">{{sum.toFixed(2)}}</span></h2>
+        </div>
+        <script type="text/javascript">
+            new Vue({
+                el: '#app',
+                data: {
+                    product:[],
+                   b:true
+                    
+                },
+                methods: {
+                del(value){
+                  // console.log(this.product[value].count)
+            
+                 if(this.product[value].count>=1){
+                  this.product[value].count--
+                 }
+                },
+                // checkbox(item){
+                //   console.log(item)
+                // this.product.splice(item,1)
+                  
+                // }
+                },
+                computed:{
+                  sum(){
+                    let sum=0;
+                    
+                    for(let i=0;i<this.product.length;i++){
+                     
+                      sum+=this.product[i].count*this.product[i].price
+                     
+                    }
+                  
+                    return sum
+                    // console.log(sum)
+                  }
+                },
+                mounted(){
+                axios.get('http://www.codeforest.cn/files/tmp/goods.php').then(res=>{
+                  this.product=res.data.data
+                  // console.log(this.product)
+                })
+               
+                },
+
+            })    
+        </script>
+        </body>
+        </html>
+    </body>
+</html>
